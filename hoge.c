@@ -43,29 +43,39 @@ int	main(int argc, char *argv[])
 	//no command line argument
 	if(argc<=1){
 		usage();
+
+		printf("%s\n",argv[0] );
+		printf("%d\n",argc);
+		
 		return 1;
 	}
 
 
 	//error handring
-	if(init_descriptor()==-1){
+	if(init_descriptor(argv[1])==-1){
 		fprintf(stderr, "init_descriptor%s\n",argv[0] );
+
+		// return -1;
 	}
 
 
 
 
 	while(1){
+
 		if (read(soc,buff,sizeof(buff))<=0){
 			perror("read");
 		}else{
-			// AnalyzePacket(buff,size);
+			printf("will do analyze packet\n");
+			// AnalyzePacket(buff,size)
 		}
 	}
 
+
+
 	// printf("%s\n", );
-	printf("%s\n",argv[0] );
-	printf("%d\n",argc);
+	printf("argv[0]:%s\n",argv[0] );
+	printf("argc:%d\n",argc);
 
 
 
@@ -77,7 +87,13 @@ int	main(int argc, char *argv[])
 
 
 void usage(){
-	printf("will write usage\n");
+	printf(" ---------------------------------------\n");
+	printf("|will write  usage                      |\n");
+	printf("|sudo ./a.out -> show usage             |\n");
+	printf(" ---------------------------------------\n");
+	printf("\n");
+	printf("あとでprinter.hに移植\n");
+
 }
 
 
@@ -89,9 +105,9 @@ int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
 
 	
 	//init socket
-	soc=socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+	soc=socket(PF_INET, SOCK_RAW, htons(ETH_P_ALL));
 
-	//printf("%d\n",soc );
+	printf("%d\n",soc );
 
 
 
