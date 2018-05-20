@@ -32,12 +32,14 @@ int init_descriptor(char *device_name);// 1:success 0:fail -1:error
 
 
 // main func
+
+int soc;
 int	main(int argc, char *argv[])
 {
 
-	int soc;
-	int size;
-	char buff[255];
+	// int soc;
+	int size=0;
+	u_char buff[255];
 
 
 	//no command line argument
@@ -50,24 +52,34 @@ int	main(int argc, char *argv[])
 		return 1;
 	}
 
+	printf("no command line zone clear!\n");
+
 
 	//error handring
 	if(init_descriptor(argv[1])==-1){
 		fprintf(stderr, "init_descriptor%s\n",argv[0] );
 
-		// return -1;
+		return -1;
 	}
 
+	printf("initiating descriptor success!\n");
 
+
+	printf("in while soc:%d\n",soc );
+	printf("size:%d\n",read(soc,buff,sizeof(buff)));
 
 
 	while(1){
-
-		if (read(soc,buff,sizeof(buff))<=0){
+		printf("\n");
+		if ((size=read(soc,buff,sizeof(buff)))<=0){
 			perror("read");
+			printf("aaa\n");
+			return -1;
 		}else{
 			printf("will do analyze packet\n");
-			// AnalyzePacket(buff,size)
+			analyze_Packet(buff,size);
+			printf("doing analyze packet\n");
+
 		}
 	}
 
@@ -105,7 +117,7 @@ int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
 
 	
 	//init socket
-	soc=socket(PF_INET, SOCK_RAW, htons(ETH_P_ALL));
+	soc=socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 
 	printf("%d\n",soc );
 
@@ -114,11 +126,12 @@ int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
 	//if error in initiating socket
 	if(soc<0){
 		perror("socket");
+		printf("initiatingv socket failed\n");
 		return -1;
 	}
 
 
-
+	printf("initiating socket clear!\n");
 
 
 	//bind to interface
@@ -144,12 +157,15 @@ int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
 	sll.sll_protocol=htons(ETH_P_ALL);
 	sll.sll_ifindex=interface_index;
 
-	if(bind(soc,(struct sockaddr *)&sll,sizeof(sll)<0)){
+	if(bind(soc,(struct sockaddr *)&sll,sizeof(sll))<0){
 		perror("bind");
+		printf("bind to interface failed\n");
 		close(soc);
 		return -1;
 	}
 
+	printf("bind to interface clear!\n");
 
+	printf("returned in init_descriptor soc:%u\n",soc );
 	return(soc);
 }
