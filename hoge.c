@@ -18,21 +18,15 @@
 #include <linux/if.h>
 #include <arpa/inet.h>
 
-
-
 //self made
 #include "analyzer.h"
-
+#include "printer.h"
 
 //prototype dec
-void usage();
-int init_descriptor(char *device_name);// 1:success 0:fail -1:error
-// init_descriptor -> init_raw_socket
-
+int init_descriptor(char *network_interface_name);// 1:success 0:fail -1:error
 
 
 // main func
-
 int soc;
 int	main(int argc, char *argv[])
 {
@@ -44,11 +38,7 @@ int	main(int argc, char *argv[])
 
 	//no command line argument
 	if(argc<=1){
-		usage();
-
-		printf("%s\n",argv[0] );
-		printf("%d\n",argc);
-		
+		usage();		
 		return 1;
 	}
 
@@ -95,23 +85,7 @@ int	main(int argc, char *argv[])
 	return 0;
 }
 
-
-
-
-void usage(){
-	printf(" ---------------------------------------\n");
-	printf("|will write  usage                      |\n");
-	printf("|sudo ./a.out -> show usage             |\n");
-	printf(" ---------------------------------------\n");
-	printf("\n");
-	printf("あとでprinter.hに移植\n");
-
-}
-
-
-
-
-int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
+int init_descriptor(char *network_interface_name){
 	
 	int soc;
 
@@ -126,7 +100,7 @@ int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
 	//if error in initiating socket
 	if(soc<0){
 		perror("socket");
-		printf("initiatingv socket failed\n");
+		printf("initiating socket failed\n");
 		return -1;
 	}
 
@@ -140,7 +114,7 @@ int init_descriptor(char *device_name  /*  , type arp or ip or all*/){
 	struct ifreq ifreq;
 
 	memset(&ifreq,0,sizeof(ifreq));
-	strncpy(ifreq.ifr_name,device_name,sizeof(ifreq.ifr_name));
+	strncpy(ifreq.ifr_name,network_interface_name,sizeof(ifreq.ifr_name));
 
 	int interface_index=ioctl(soc,SIOCGIFINDEX,&ifreq);
 	
