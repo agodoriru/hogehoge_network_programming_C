@@ -10,3 +10,24 @@ ethernet packet
 
  プリアンブル
  SFD
+
+
+
+
+---
+
+hoge.c
+
+
+
+---
+
+interface_checker.c
+
+
+socket()
+ソケット生成
+
+
+
+---

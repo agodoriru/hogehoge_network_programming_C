@@ -1,4 +1,4 @@
-OBJS=hoge.o analyzer.o printer.o
+OBJS=hoge.o analyzer.o printer.o interface_checker.o
 SRCS=$(OBJS:%.o=%.c)
 CFLAGS=-g -Wall
 LDLIBS=

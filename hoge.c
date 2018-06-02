@@ -21,6 +21,7 @@
 //self made
 #include "analyzer.h"
 #include "printer.h"
+#include "interface_checker.h"
 
 //prototype dec
 int init_descriptor(char *network_interface_name);// 1:success 0:fail -1:error
@@ -41,9 +42,21 @@ int	main(int argc, char *argv[])
 		usage();		
 		return 1;
 	}
+	
 
-	printf("no command line zone clear!\n");
+	// printf("no command line zone clear!\n");
+	// printf("%s\n",argv[1]);
+	
+	if(strcmp(argv[1],"show")==0){
 
+		// printf("in\n");
+
+		interface_checker();
+		return 0;
+	}
+
+	
+	printf("clear\n");
 
 	//error handring
 	if(init_descriptor(argv[1])==-1){
@@ -143,3 +156,5 @@ int init_descriptor(char *network_interface_name){
 	printf("returned in init_descriptor soc:%u\n",soc );
 	return(soc);
 }
+
+
