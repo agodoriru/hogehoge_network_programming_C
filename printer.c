@@ -61,6 +61,43 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
 
 }
 
+char *MACaddress_int_to_str(u_char *hwaddr,char *buf,socklen_t size){
+	snprintf(buf,size,"%02x:%02x:%02x:%02x:%02x:%02x",
+		hwaddr[0],hwaddr[1],hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]);
+	return(buf);
+}
+
+
+int print_EtherHeader(struct ether_header *eh,FILE *fp){
+	char buf[128];
+
+	//show mac address distina & source
+	fprintf(fp,"Ethernet_distination_host=%s\n",MACaddress_int_to_str(eh->ether_dhost,buf,sizeof(buf)));
+	fprintf(fp,"Ethernet_source_host=%s\n",MACaddress_int_to_str(eh->ether_shost,buf,sizeof(buf)));
+
+	//type
+	fprintf(fp,"ether_type=%02X",ntohs(eh->ether_type));
+
+
+	switch(ntohs(eh->ether_type)){
+		case	ETH_P_IP:
+			fprintf(fp,"(IP)\n");
+			break;
+		case	ETH_P_IPV6:
+			fprintf(fp,"(IPv6)\n");
+			break;
+		case	ETH_P_ARP:
+			fprintf(fp,"(ARP)\n");
+			break;
+		default:
+			fprintf(fp,"(unknown)\n");
+			break;
+	}
+
+	return(0);
+}
+
+
 void usage(){
 	printf(" --------------------------------------------------------\n");
 	printf("|hogehoge network capture\n");

@@ -29,8 +29,7 @@ int init_descriptor(char *network_interface_name);// 1:success 0:fail -1:error
 
 // main func
 int soc;
-int	main(int argc, char *argv[])
-{
+int	main(int argc, char *argv[]){
 
 	// int soc;
 	int size=0;
@@ -79,9 +78,9 @@ int	main(int argc, char *argv[])
 			printf("aaa\n");
 			return -1;
 		}else{
-			printf("will do analyze packet\n");
+			printf("will do analyze\n");
 			analyze_Packet(buff,size);
-			printf("doing analyze packet\n");
+			printf("doing analyze\n");
 
 		}
 	}
