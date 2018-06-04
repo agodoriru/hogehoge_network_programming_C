@@ -17,6 +17,8 @@
 #include <net/ethernet.h>
 #include <linux/if.h>
 #include <arpa/inet.h>
+#include <unistd.h>
+#include <getopt.h>
 
 //self made
 #include "analyzer.h"
@@ -32,8 +34,8 @@ int soc;
 int	main(int argc, char *argv[]){
 
 	// int soc;
-	int size=0;
-	u_char buff[255];
+	int size;
+	u_char buff[5012];
 
 
 	//no command line argument
@@ -73,12 +75,13 @@ int	main(int argc, char *argv[]){
 
 	while(1){
 		printf("\n");
-		if ((size=read(soc,buff,sizeof(buff)))<=0){
+		if (size=read(soc,buff,sizeof(buff))<=0){
 			perror("read");
 			printf("aaa\n");
 			return -1;
 		}else{
 			printf("will do analyze\n");
+			fprintf(stderr, "buff:%s&size:%d \n",buff,size );
 			analyze_Packet(buff,size);
 			printf("doing analyze\n");
 

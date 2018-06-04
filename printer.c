@@ -94,7 +94,7 @@ int print_EtherHeader(struct ether_header *eh,FILE *fp){
 			break;
 	}
 
-	return(0);
+	
 }
 
 

@@ -49,5 +49,42 @@ int analyze_ICMP(u_char *data,int size){
 
 
 int analyze_Packet(u_char *data,int size){
-	return(0);
+	
+	u_char *ptr;
+	int lest;
+
+	struct ether_header *eh;
+
+	ptr=data;
+	lest=size;
+
+	fprintf(stderr,"%d\n",lest);
+	fprintf(stderr,"%d\n",sizeof(struct ether_header));
+
+	if(lest<sizeof(struct ether_header)){
+		fprintf(stderr, "lest(%d)<sizeof(struct ether_header)\n",lest );
+
+		return -1;
+
+	}
+
+	eh=(struct ether_header *)ptr;
+	ptr+=sizeof(struct ether_header);
+	lest-=sizeof(struct ether_header);
+
+
+
+	if(ntohs(eh->ether_type)==ETHERTYPE_ARP){
+		fprintf(stderr, "packet[%dbytes]\n", size);
+		print_EtherHeader(eh,stdout);
+
+	}
+
+	return 0;
+
+
+
+
+
+
 }
