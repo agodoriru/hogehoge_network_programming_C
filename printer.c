@@ -99,21 +99,19 @@ int print_EtherHeader(struct ether_header *eh,FILE *fp){
 
 
 void usage(){
-	printf(" --------------------------------------------------------\n");
-	printf("|hogehoge network capture\n");
-	printf("|\n");
-	printf("|warning !!! need sudo privileges to use !!!                     |\n");
-	printf("|$ sudo ./a.out             |\n");
-	printf("|-> show usage                      |\n");
-	printf("|$ sudo ./hoge [network interface name]\n");
-	printf("|-> show something                      |\n");
-	printf("|will write  usage                      |\n");
-	printf("|will write  usage                      |\n");
-	printf("|will write  usage                      |\n");
-	printf("|will write  usage                      |\n");
-	printf("|will write  usage                      |\n");
-	printf(" ---------------------------------------\n");
-	printf(" --------------------------------------------------------\n");
+	printf("  =========================================================\n");
+	printf("||                                                         ||\n");
+	printf("||          hogehoge network capture                       ||\n");
+	printf("||                                                         ||\n");
+	printf("||      !!! warning need sudo privileges to use !!!        ||\n");
+	printf("||                                                         ||\n");
+	printf("||          $ sudo ./hoge [network interface name]         ||\n");
+	printf("||          -> show something                              ||\n");
+	printf("||                                                         ||\n");
+	printf("||          $ sudo ./a.out                                 ||\n");
+	printf("||          -> show usage                                  ||\n");
+	printf("||                                                         ||\n");
+	printf("  =========================================================\n");
 	printf("\n");
 
 }
