@@ -19,6 +19,8 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/ip_icmp.h>
+#include <netinet/if_ether.h>
+
 
 //self made
 #include "printer.h"
@@ -46,6 +48,30 @@ int analyze_ICMP(u_char *data,int size){
 }
 
 
+int analyze_Arp(u_char *data,int size){
+
+    u_char *ptr;
+    int lest;
+
+    struct ether_arp *arp;
+
+    ptr=data;
+    lest=size;
+
+    if(lest<sizeof(struct ether_arp)){
+        fprintf(stderr,"lest(%d)<sizeof(struct ether_header)\n",lest);
+        return (-1);
+    }
+
+    arp=(struct ether_arp *)ptr;
+    ptr+=sizeof(struct ether_arp);
+    lest-=sizeof(struct ether_arp);
+
+    print_Arp(arp,stdout);
+
+    return 0;
+
+}
 
 
 int analyze_Packet(u_char *data,int size){
@@ -58,13 +84,12 @@ int analyze_Packet(u_char *data,int size){
 	ptr=data;
 	lest=size;
 
-	fprintf(stderr,"%d\n",lest);
-	fprintf(stderr,"%d\n",sizeof(struct ether_header));
+	fprintf(stderr,"lest:%d\n",lest);
+	fprintf(stderr,"sizeof(struct ether_header)%d\n",sizeof(struct ether_header));
 
 	if(lest<sizeof(struct ether_header)){
 		fprintf(stderr, "lest(%d)<sizeof(struct ether_header)\n",lest );
-
-		return -1;
+		return(-1);
 
 	}
 
@@ -77,6 +102,11 @@ int analyze_Packet(u_char *data,int size){
 	if(ntohs(eh->ether_type)==ETHERTYPE_ARP){
 		fprintf(stderr, "packet[%dbytes]\n", size);
 		print_EtherHeader(eh,stdout);
+		printf("debug\n");
+
+		analyze_Arp(ptr,lest);
+
+		printf("debug pritn arp end\n");
 
 	}
 

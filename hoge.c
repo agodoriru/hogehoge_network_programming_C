@@ -70,10 +70,15 @@ int main(int argc,char *argv[]){
             if(size>=sizeof(struct ether_header)){
 
                 printf("doing analyze\n");
-
-                print_EtherHeader((struct ether_header *)buff,stdout);
-//                sleep(1);
                 get_time();
+                printf("------------------------------------------------\n");
+                print_EtherHeader((struct ether_header *)buff,stdout);
+                printf("------------------------------------------------\n\n\n");
+                printf("==================================================\n");
+                analyze_Packet(buff,size);
+                printf("==================================================");
+//                sleep(1);
+
                 printf("done analyze\n\n");
 
             }else{

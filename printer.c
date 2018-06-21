@@ -21,6 +21,149 @@
 #include <netinet/ip_icmp.h>
 #include <time.h>
 #include <sys/time.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <sys/param.h>
+#include <sys/sysctl.h>
+#include <arpa/inet.h>
+#include <net/if.h>
+#include <net/if_arp.h>
+#include <net/route.h>
+#include <netinet/in.h>
+#include <netinet/if_ether.h>
+#include <linux/if_packet.h>
+#include <linux/if_ether.h>
+#include <netinet/ether.h>
+
+
+int print_Arp(struct ether_arp *arp,FILE *fp){
+
+    printf("debug in print arp\n");
+
+
+    static char *hardware_type[]={
+
+            //====================================================================================
+        //ref-url: https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml#arp-parameters-2
+        //====================================================================================
+
+        "Reserved",
+        "Ethernet (10Mb)",
+        "Experimental Ethernet (3Mb)",
+        "Amateur Radio AX.25",
+        "Proteon ProNET Token Ring",
+        "Chaos",
+        "IEEE 802 Networks",
+        "ARCNET",
+            "Hyperchannel",
+            "Lanstar",
+            "Autonet Short Address",
+            "LocalTalk",
+            "LocalNet (IBM PCNet or SYTEK LocalNET)",
+            "Ultra link",
+            "MDS",
+            "Frame Relay",
+            "Asynchronous Transmission Mode (ATM)",
+            "HDLC",
+            "Fibre Channel",
+            "Asynchronous Transmission Mode (ATM)",
+            "Serial Line",
+            "Asynchronous Transmission Mode (ATM)",
+            "MIL-STD-188-220",
+            "Metricom",
+            "IEEE 1394.1995",
+            "MAPOS",
+            "Twinaxial",
+            "EUI-64",
+            "HIPARP",
+            "IP and ARP over ISO 7816-3",
+            "ARPSec",
+            "IPsec tunnel",
+            "nfiniBand (TM)",
+            "TIA-102 Project 25 Common Air Interface (CAI)",
+            "Wiegand Interface",
+            "Pure IP",
+            "HW_EXP1",
+            "HFI",
+            "Unassigned",
+
+
+    };
+
+    static char *operation_code[]={
+
+            //====================================================================================
+            //ref-url:https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml
+            //====================================================================================
+
+            "REQUEST",
+            "REPLY",
+            "request Reverse",
+            "reply Reverse",
+            "DRARP-Request",
+            "DRARP-Reply",
+            "DRARP-Error",
+            "InARP-Request",
+            "InARP-Reply",
+            "ARP-NAK",
+            "MARS-Request",
+            "MARS-Multi",
+            "MARS-MServ",
+            "MARS-Join",
+            "MARS-Leave",
+            "MARS-NAK",
+            "MARS-Unserv",
+            "MARS-SJoin",
+            "MARS-SLeave",
+            "MARS-Grouplist-Request",
+            "MARS-Grouplist-Reply",
+            "MARS-Redirect-Map",
+            "MAPOS-UNARP",
+            "OP_EXP1",
+            "OP_EXP2",
+            "Unassigned",
+            "Reserved",
+
+
+    };
+    printf("hardware_type=%u\n",ntohs(arp->arp_hrd));
+    printf("debug array made\n");
+
+    char buff[256];
+    fprintf(fp,"=arp=");
+    printf("debug char made\n");
+
+
+    fprintf(fp,"=======================================================\n");
+    fprintf(fp,"====================arp================================\n");
+    fprintf(fp,"=======================================================\n");
+//    fprintf(fp,arp);
+//    printf(ntohs(arp->arp_hrd));
+    fprintf(fp,"debug\n");
+    fprintf(fp,"hardware_type=%u\n",ntohs(arp->arp_hrd));
+
+    if((ntohs(arp->arp_hrd))<25){
+        fprintf(fp,"%s\n",hardware_type[ntohs(arp->arp_hrd)]);
+    }else{
+        fprintf(fp,"undifined\n");
+    }
+    fprintf(fp,"debug\n");
+    sleep(5);
+    fprintf(fp,"=======================arp end============================");
+}
 
 int print_ICMP(struct icmp *icmp,FILE *fp){
 	static char *icmp_type[]={
