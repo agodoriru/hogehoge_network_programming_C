@@ -26,6 +26,7 @@
 #include "printer.h"
 
 int analyze_ICMP(u_char *data,int size){
+	
 	u_char *ptr;
 	int lest;
 
@@ -108,13 +109,16 @@ int analyze_Packet(u_char *data,int size){
 
 		printf("debug pritn arp end\n");
 
+	}else if(ntohs(eh->ether_type)==ETHERTYPE_IP){
+		//analyze IP
 	}
 
 	return 0;
 
 
+}
 
+int analyze_IP(u_char *data,int size){
 
-
-
+	
 }

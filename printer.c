@@ -56,7 +56,7 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
 
     static char *hardware_type[]={
 
-            //====================================================================================
+        //====================================================================================
         //ref-url: https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml#arp-parameters-2
         //====================================================================================
 
@@ -68,74 +68,74 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
         "Chaos",
         "IEEE 802 Networks",
         "ARCNET",
-            "Hyperchannel",
-            "Lanstar",
-            "Autonet Short Address",
-            "LocalTalk",
-            "LocalNet (IBM PCNet or SYTEK LocalNET)",
-            "Ultra link",
-            "MDS",
-            "Frame Relay",
-            "Asynchronous Transmission Mode (ATM)",
-            "HDLC",
-            "Fibre Channel",
-            "Asynchronous Transmission Mode (ATM)",
-            "Serial Line",
-            "Asynchronous Transmission Mode (ATM)",
-            "MIL-STD-188-220",
-            "Metricom",
-            "IEEE 1394.1995",
-            "MAPOS",
-            "Twinaxial",
-            "EUI-64",
-            "HIPARP",
-            "IP and ARP over ISO 7816-3",
-            "ARPSec",
-            "IPsec tunnel",
-            "nfiniBand (TM)",
-            "TIA-102 Project 25 Common Air Interface (CAI)",
-            "Wiegand Interface",
-            "Pure IP",
-            "HW_EXP1",
-            "HFI",
-            "Unassigned",
+        "Hyperchannel",
+        "Lanstar",
+        "Autonet Short Address",
+        "LocalTalk",
+        "LocalNet (IBM PCNet or SYTEK LocalNET)",
+        "Ultra link",
+        "MDS",
+        "Frame Relay",
+        "Asynchronous Transmission Mode (ATM)",
+        "HDLC",
+        "Fibre Channel",
+        "Asynchronous Transmission Mode (ATM)",
+        "Serial Line",
+        "Asynchronous Transmission Mode (ATM)",
+        "MIL-STD-188-220",
+        "Metricom",
+        "IEEE 1394.1995",
+        "MAPOS",
+        "Twinaxial",
+        "EUI-64",
+        "HIPARP",
+        "IP and ARP over ISO 7816-3",
+        "ARPSec",
+        "IPsec tunnel",
+        "nfiniBand (TM)",
+        "TIA-102 Project 25 Common Air Interface (CAI)",
+        "Wiegand Interface",
+        "Pure IP",
+        "HW_EXP1",
+        "HFI",
+        "Unassigned",
 
 
     };
 
     static char *operation_code[]={
 
-            //====================================================================================
-            //ref-url:https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml
-            //====================================================================================
+        //====================================================================================
+        //ref-url:https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml
+        //====================================================================================
 
-            "REQUEST",
-            "REPLY",
-            "request Reverse",
-            "reply Reverse",
-            "DRARP-Request",
-            "DRARP-Reply",
-            "DRARP-Error",
-            "InARP-Request",
-            "InARP-Reply",
-            "ARP-NAK",
-            "MARS-Request",
-            "MARS-Multi",
-            "MARS-MServ",
-            "MARS-Join",
-            "MARS-Leave",
-            "MARS-NAK",
-            "MARS-Unserv",
-            "MARS-SJoin",
-            "MARS-SLeave",
-            "MARS-Grouplist-Request",
-            "MARS-Grouplist-Reply",
-            "MARS-Redirect-Map",
-            "MAPOS-UNARP",
-            "OP_EXP1",
-            "OP_EXP2",
-            "Unassigned",
-            "Reserved",
+        "REQUEST",
+        "REPLY",
+        "request Reverse",
+        "reply Reverse",
+        "DRARP-Request",
+        "DRARP-Reply",
+        "DRARP-Error",
+        "InARP-Request",
+        "InARP-Reply",
+        "ARP-NAK",
+        "MARS-Request",
+        "MARS-Multi",
+        "MARS-MServ",
+        "MARS-Join",
+        "MARS-Leave",
+        "MARS-NAK",
+        "MARS-Unserv",
+        "MARS-SJoin",
+        "MARS-SLeave",
+        "MARS-Grouplist-Request",
+        "MARS-Grouplist-Reply",
+        "MARS-Redirect-Map",
+        "MAPOS-UNARP",
+        "OP_EXP1",
+        "OP_EXP2",
+        "Unassigned",
+        "Reserved",
 
 
     };
@@ -163,6 +163,22 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
     fprintf(fp,"debug\n");
     sleep(5);
     fprintf(fp,"=======================arp end============================");
+
+
+    fprintf(fp, "arp-protocol:%u\n",ntohs(arp->arp_pro) );
+
+    fprintf(fp, "arp-headware-length:%u\n",arp->arp_hln);
+    fprintf(fp, "arp-protocol-length:%u\n",  arp->arp_pln);
+
+    if((ntohs(arp->arp_op)<=20)){
+        fprintf(fp, "arp-operation:%u\n",operation_code[ntohs(arp->arp_op)] );
+    }else{
+        fprintf(fp, "undifined\n");
+    }
+
+
+
+
 }
 
 int print_ICMP(struct icmp *icmp,FILE *fp){
