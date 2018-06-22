@@ -16,13 +16,25 @@ ethernet packet
 
 ---
 
-hoge.c
+### hoge.c
 
+* main
+* init_descriptor
+
+main()
+command line arg 0 -> usage()  
+command line arg[1] show -> interface_checker()  
+
+init_descriptor() ->loop  
+
+
+
+init_discriptor()  
 
 
 ---
 
-interface_checker.c
+### interface_checker.c
 
 
 socket()
@@ -31,3 +43,17 @@ socket()
 
 
 ---
+
+### analuzer.c
+
+* analyze_ICMP
+* analyze_Packet
+* analyze_Arp
+
+
+---
+
+### printer.c
+
+
+
