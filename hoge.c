@@ -57,6 +57,7 @@ int main(int argc,char *argv[]){
     printf("initiating descriptor success!\n");
     printf("in while soc:%d\n",soc );
     printf("size:%d\n",read(soc,buff,sizeof(buff)));
+    sleep(10);
 
 
     while(1){

@@ -111,6 +111,7 @@ int analyze_Packet(u_char *data,int size){
 
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IP){
 		//analyze IP
+		analyze_IP(ptr,lest);
 	}
 
 	return 0;
@@ -120,5 +121,30 @@ int analyze_Packet(u_char *data,int size){
 
 int analyze_IP(u_char *data,int size){
 
+	u_char *ptr;
+	int lest;
+
+	struct iphdr *iphdr;
+
+	u_char *option;
+	int oplen;
+	int len;
+	unsigned short sum;
+
+	ptr=data;
+	lest=size;
+
+	if(lest<sizeof(struct iphdr)){
+		fprintf(stderr, "error\n");
+		return (-1);
+	}
 	
+	iphdr=(struct iphdr*)ptr;
+	ptr+=sizeof(struct iphdr);
+	lest-=sizeof(struct iphdr);
+
+	print_IP_header(iphdr,stdout);
+
+	return 0;
+		
 }

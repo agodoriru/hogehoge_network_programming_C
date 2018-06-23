@@ -153,7 +153,7 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
 //    fprintf(fp,arp);
 //    printf(ntohs(arp->arp_hrd));
     fprintf(fp,"debug\n");
-    fprintf(fp,"hardware_type=%u\n",ntohs(arp->arp_hrd));
+    fprintf(fp,"hardware_type=%u:",ntohs(arp->arp_hrd));
 
     if((ntohs(arp->arp_hrd))<25){
         fprintf(fp,"%s\n",hardware_type[ntohs(arp->arp_hrd)]);
@@ -178,6 +178,50 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
 
 
 
+
+}
+
+int print_IP_header(struct iphdr *iphdr,FILE *fp){
+    fprintf(fp, "============IP info=======================\n");
+    static char *protocol[]={
+
+        "undifined",
+        "ICMP",
+        "IGMP",
+        "undifined",
+        "IP",
+        "undifined",
+        "TCP",
+        "CBT",
+        "EGP",
+        "IGP",
+        "undifined",
+        "undifined",
+        "undifined",
+        "undifined",
+        "undifined",
+        "undifined",
+        "undifined",
+        "UDP",
+
+    };
+
+    fprintf(fp, "version:%u\n", iphdr->version);
+    fprintf(fp, "header length:%u\n",iphdr->ihl);
+    fprintf(fp, "type of service:%u\n",iphdr->tos);
+   
+    fprintf(fp, "packet total size:%u\n",iphdr->tot_len);
+    
+    fprintf(fp, "protocol:%u ",iphdr->protocol);
+
+    if((iphdr->protocol)<=25){
+        fprintf(fp, "%s\n",protocol[iphdr->protocol]);
+    }else{
+        fprintf(fp, "undifined\n");
+    }
+
+    sleep(5);
+    fprintf(fp, "============IP info=======================\n");
 
 }
 
