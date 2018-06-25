@@ -71,16 +71,21 @@ int main(int argc,char *argv[]){
             if(size>=sizeof(struct ether_header)){
 
                 printf("doing analyze\n");
+                printf("=====================================================\n");
+
                 get_time(stdout);
                 printf("------------------------------------------------\n");
                 print_EtherHeader((struct ether_header *)buff,stdout);
                 printf("------------------------------------------------\n\n\n");
-                printf("==================================================\n");
                 analyze_Packet(buff,size);
-                printf("==================================================");
+                printf("--------------------------------------------------\n");
+
 //                sleep(1);
 
+                
                 printf("done analyze\n\n");
+
+                printf("=====================================================\n");
 
             }else{
                 fprintf(stderr,"read size(%d) < %d\n",size,sizeof(struct ether_header));

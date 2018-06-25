@@ -20,6 +20,7 @@
 #include <netinet/in.h>
 #include <netinet/ip_icmp.h>
 #include <netinet/if_ether.h>
+#include <netinet/tcp.h>
 
 
 //self made
@@ -35,7 +36,7 @@ int analyze_ICMP(u_char *data,int size){
 	if(lest<sizeof(struct icmp)){
 		fprintf(stderr, "lest(%d)<sizeof(struct icmp)\n",lest );
 
-		return -1;
+		return (-1);
 
 	}
 
@@ -121,6 +122,32 @@ int analyze_Packet(u_char *data,int size){
 
 }
 
+int analyze_TCP(u_char *data,int size){
+
+	u_char *ptr;
+    int lest;
+
+    struct tcphdr *tcphdr;
+
+    ptr=data;
+    lest=size;
+
+    if(lest<sizeof(struct tcphdr)){
+        fprintf(stderr,"lest(%d)<sizeof(struct tcphdr)\n",lest);
+        return (-1);
+    }
+    
+    tcphdr=(struct tcphdr *)ptr;
+    ptr+=sizeof(struct tcphdr);
+    lest-=sizeof(struct tcphdr);
+
+    print_TCP(tcphdr,stdout);
+
+    return 0;
+
+
+}
+
 int analyze_IP(u_char *data,int size){
 
 	u_char *ptr;
@@ -145,7 +172,40 @@ int analyze_IP(u_char *data,int size){
 	ptr+=sizeof(struct iphdr);
 	lest-=sizeof(struct iphdr);
 
+	oplen=iphdr->ihl*4-sizeof(struct iphdr);
+
+	if(oplen>0){
+		if(oplen>=1500){
+			fprintf(stderr, "IP oplen:%d\n",oplen);
+			return (-1);
+		}
+
+		option=ptr;
+		ptr+=oplen;
+		lest-=oplen;
+
+	}
+
+	// if(IP_checksum()){
+	// 	fprintf(stderr, "bad checksum\n");
+	// 	return (-1);
+	// }
+
 	print_IP_header(iphdr,stdout);
+
+	if(iphdr->protocol==IPPROTO_ICMP){
+		// len=ntohs(iphdr->tot_len)-iphdr->ihl*4;
+
+		analyze_ICMP(ptr,lest);
+
+
+	}else if(iphdr->protocol==IPPROTO_TCP){
+		analyze_TCP(ptr,lest);
+	}else if(iphdr->protocol==IPPROTO_UDP){
+		//analyze_UDP(ptr,lest);
+	}
+
+
 
 	return 0;
 		

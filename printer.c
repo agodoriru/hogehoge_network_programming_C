@@ -47,6 +47,7 @@
 #include <linux/if_packet.h>
 #include <linux/if_ether.h>
 #include <netinet/ether.h>
+#include <netinet/tcp.h>
 
 
 int print_Arp(struct ether_arp *arp,FILE *fp){
@@ -181,6 +182,37 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
 
 }
 
+int print_TCP(struct tcphdr *tcphdr,FILE *fp){
+    fprintf(fp, "============TCP info=======================\n");
+
+    fprintf(fp, "in print TCP func\n");
+
+    fprintf(fp, "source port:%u\n",ntohs(tcphdr->source));
+    fprintf(fp, "target port:%u\n",ntohs(tcphdr->dest));
+    fprintf(fp, "sequence number:%u\n",ntohl(tcphdr->seq));
+    fprintf(fp, "acknowledgement number:%u\n",ntohl(tcphdr->ack_seq));
+    fprintf(fp, "reserved 1:%u\n",tcphdr->res1);
+    fprintf(fp, "data offset:%u\n",tcphdr->doff);
+    fprintf(fp, "urg bit:%u\n",tcphdr->urg);
+    fprintf(fp, "ack bit:%u\n",tcphdr->ack);
+    fprintf(fp, "psh bit:%u\n",tcphdr->psh);
+    fprintf(fp, "rst bit:%u\n",tcphdr->rst);
+    fprintf(fp, "syn bit:%u\n",tcphdr->syn);
+    fprintf(fp, "fin bit:%u\n",tcphdr->fin);
+
+    fprintf(fp, "window:%u\n", ntohs(tcphdr->window));
+    fprintf(fp, "check sum:%u\n",ntohs(tcphdr->check));
+    fprintf(fp, "urgent pointer:%u\n",ntohs(tcphdr->urg_ptr));
+
+    
+
+    fprintf(fp, "reserved 2:%u\n",tcphdr->res2);
+    fprintf(fp, "============TCP info end=======================\n");
+
+
+}
+
+
 int print_IP_header(struct iphdr *iphdr,FILE *fp){
     fprintf(fp, "============IP info=======================\n");
     static char *protocol[]={
@@ -221,7 +253,7 @@ int print_IP_header(struct iphdr *iphdr,FILE *fp){
     }
 
     sleep(5);
-    fprintf(fp, "============IP info=======================\n");
+    fprintf(fp, "============IP info end=======================\n");
 
 }
 
@@ -241,7 +273,7 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
         "Router Solicitation",
         "Time Exceeded",
         "Parameter Proble",
-        "Timestamp  タイムスタンプ",
+        "Timestamp",
         "Timestamp Reply",
         "Information Request",
         "Information Reply",
@@ -250,8 +282,8 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
 		
 	};
 
-	fprintf(fp, "icmp-------------------------------------\n");
-	fprintf(fp, "icmp_type=%u",icmp -> icmp_type);
+	fprintf(fp, "===============ICMP info=================\n");
+	fprintf(fp, "icmp type=%u:",icmp -> icmp_type);
 
 	if(icmp->icmp_type<=18){
 		fprintf(fp, "%s\n",icmp_type[icmp->icmp_type]);
@@ -259,10 +291,10 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
 		fprintf(fp, "undifined\n");
 	}
 
-	fprintf(fp, "icmp_code=%u\n",icmp->icmp_code);
-	// fprintf(fp, "icmp_seq=%u\n",ntohs(icmp->icmp_cksum) );
-
-
+	fprintf(fp, "icmp code=%u\n",icmp->icmp_code);
+	fprintf(fp, "icmp_seq=%u\n",ntohs(icmp->icmp_cksum));
+    fprintf(fp, "===============ICMP info end=================\n");
+    sleep(10);
 
 }
 
