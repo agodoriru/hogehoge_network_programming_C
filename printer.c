@@ -229,25 +229,25 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
 	static char *icmp_type[]={
 
 		"Echo Reply",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
-		"hoge",//
+        "undefined",
+        "undifined",
+        "Destination Unreachable",
+        "Source Quench",
+        "Redirect",
+        "undifined",
+        "undifined",
+        "Echo Request",
+        "Router Advertisement",
+        "Router Solicitation",
+        "Time Exceeded",
+        "Parameter Proble",
+        "Timestamp  タイムスタンプ",
+        "Timestamp Reply",
+        "Information Request",
+        "Information Reply",
+        "Address Mask Request",
+        "Address Mask Reply",
+		
 	};
 
 	fprintf(fp, "icmp-------------------------------------\n");
@@ -299,28 +299,28 @@ int print_EtherHeader(struct ether_header *eh,FILE *fp)
     return(0);
 }
 
-void get_time(){
+void get_time(FILE *fp){
     char date[1023];
     time_t t;
     t=time(NULL);
     char *now=ctime(&t);
-    printf(now);
+    fprintf(stderr,now);
     return;
 }
-void usage(){
-	printf("  =========================================================\n");
-	printf("||                                                         ||\n");
-	printf("||          hogehoge network capture                       ||\n");
-	printf("||                                                         ||\n");
-	printf("||      !!! warning need sudo privileges to use !!!        ||\n");
-	printf("||                                                         ||\n");
-	printf("||          $ sudo ./hoge [network interface name]         ||\n");
-	printf("||          -> show something                              ||\n");
-	printf("||                                                         ||\n");
-	printf("||          $ sudo ./a.out                                 ||\n");
-	printf("||          -> show usage                                  ||\n");
-	printf("||                                                         ||\n");
-	printf("  =========================================================\n");
-	printf("\n");
+void usage(FILE *fp){
+	fprintf(stderr,"                      =========================================================\n");
+	fprintf(stderr,"                    ||                                                         ||\n");
+	fprintf(stderr,"                    ||          hogehoge network capture                       ||\n");
+	fprintf(stderr,"                    ||                                                         ||\n");
+	fprintf(stderr,"                    ||      !!! warning need sudo privileges to use !!!        ||\n");
+	fprintf(stderr,"                    ||                                                         ||\n");
+	fprintf(stderr,"                    ||          $ sudo ./hoge [network interface name]         ||\n");
+	fprintf(stderr,"                    ||          -> show something                              ||\n");
+	fprintf(stderr,"                    ||                                                         ||\n");
+	fprintf(stderr,"                    ||          $ sudo ./a.out                                 ||\n");
+	fprintf(stderr,"                    ||          -> show usage                                  ||\n");
+	fprintf(stderr,"                    ||                                                         ||\n");
+	fprintf(stderr,"                      =========================================================\n");
+	fprintf(stderr,"\n");
 
 }

@@ -112,6 +112,8 @@ int analyze_Packet(u_char *data,int size){
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IP){
 		//analyze IP
 		analyze_IP(ptr,lest);
+	}else if(ntohs(eh->ether_type)==ETHERTYPE_IPV6){
+		//analayze_IPv6
 	}
 
 	return 0;
@@ -147,4 +149,16 @@ int analyze_IP(u_char *data,int size){
 
 	return 0;
 		
+}
+
+
+int analayze_IPv6(u_char *data,int size){
+
+	u_char *ptr;
+	int lest;
+
+	
+
+
+	return 0;
 }

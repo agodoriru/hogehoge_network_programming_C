@@ -35,7 +35,7 @@ int main(int argc,char *argv[]){
 
     //no command line argument
     if(argc<=1){
-        usage();
+        usage(stdout);
         return 1;
     }
 
@@ -71,7 +71,7 @@ int main(int argc,char *argv[]){
             if(size>=sizeof(struct ether_header)){
 
                 printf("doing analyze\n");
-                get_time();
+                get_time(stdout);
                 printf("------------------------------------------------\n");
                 print_EtherHeader((struct ether_header *)buff,stdout);
                 printf("------------------------------------------------\n\n\n");
