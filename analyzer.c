@@ -50,7 +50,7 @@ int analyze_ICMP(u_char *data,int size){
 }
 
 
-int analyze_Arp(u_char *data,int size){
+int analyze_ARP(u_char *data,int size){
 
     u_char *ptr;
     int lest;
@@ -69,7 +69,7 @@ int analyze_Arp(u_char *data,int size){
     ptr+=sizeof(struct ether_arp);
     lest-=sizeof(struct ether_arp);
 
-    print_Arp(arp,stdout);
+    print_ARP(arp,stdout);
 
     return 0;
 
@@ -106,7 +106,7 @@ int analyze_Packet(u_char *data,int size){
 		print_EtherHeader(eh,stdout);
 		printf("debug\n");
 
-		analyze_Arp(ptr,lest);
+		analyze_ARP(ptr,lest);
 
 		printf("debug pritn arp end\n");
 
@@ -202,7 +202,7 @@ int analyze_IP(u_char *data,int size){
 	}else if(iphdr->protocol==IPPROTO_TCP){
 		analyze_TCP(ptr,lest);
 	}else if(iphdr->protocol==IPPROTO_UDP){
-		//analyze_UDP(ptr,lest);
+		analyze_UDP(ptr,lest);
 	}
 
 
@@ -210,7 +210,11 @@ int analyze_IP(u_char *data,int size){
 	return 0;
 		
 }
+analyze_UDP(ptr,lest){
 
+	
+
+}
 
 int analayze_IPv6(u_char *data,int size){
 

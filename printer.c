@@ -50,7 +50,7 @@
 #include <netinet/tcp.h>
 
 
-int print_Arp(struct ether_arp *arp,FILE *fp){
+int print_ARP(struct ether_arp *arp,FILE *fp){
 
     printf("debug in print arp\n");
 
@@ -141,19 +141,10 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
 
     };
     printf("hardware_type=%u\n",ntohs(arp->arp_hrd));
-    printf("debug array made\n");
-
+    
     char buff[256];
-    fprintf(fp,"=arp=");
-    printf("debug char made\n");
+    fprintf(fp,"============================ARP info==============================");
 
-
-    fprintf(fp,"=======================================================\n");
-    fprintf(fp,"====================arp================================\n");
-    fprintf(fp,"=======================================================\n");
-//    fprintf(fp,arp);
-//    printf(ntohs(arp->arp_hrd));
-    fprintf(fp,"debug\n");
     fprintf(fp,"hardware_type=%u:",ntohs(arp->arp_hrd));
 
     if((ntohs(arp->arp_hrd))<25){
@@ -161,10 +152,7 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
     }else{
         fprintf(fp,"undifined\n");
     }
-    fprintf(fp,"debug\n");
-    sleep(5);
-    fprintf(fp,"=======================arp end============================");
-
+    
 
     fprintf(fp, "arp-protocol:%u\n",ntohs(arp->arp_pro) );
 
@@ -176,6 +164,9 @@ int print_Arp(struct ether_arp *arp,FILE *fp){
     }else{
         fprintf(fp, "undifined\n");
     }
+
+    fprintf(fp,"============================ARP info end==============================");
+
 
 
 
@@ -199,13 +190,9 @@ int print_TCP(struct tcphdr *tcphdr,FILE *fp){
     fprintf(fp, "rst bit:%u\n",tcphdr->rst);
     fprintf(fp, "syn bit:%u\n",tcphdr->syn);
     fprintf(fp, "fin bit:%u\n",tcphdr->fin);
-
     fprintf(fp, "window:%u\n", ntohs(tcphdr->window));
     fprintf(fp, "check sum:%u\n",ntohs(tcphdr->check));
     fprintf(fp, "urgent pointer:%u\n",ntohs(tcphdr->urg_ptr));
-
-    
-
     fprintf(fp, "reserved 2:%u\n",tcphdr->res2);
     fprintf(fp, "============TCP info end=======================\n");
 
