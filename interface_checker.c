@@ -27,31 +27,15 @@ void interface_checker(){
  	int soc;
  	int network_interface_numbers;
 
+	soc = socket(AF_INET,SOCK_STREAM,0);
 
-	soc=socket(AF_INET,SOCK_STREAM,0);
-
-
-	//wakarann
-
-	ifc.ifc_len=sizeof(ifr);
-
-	ifc.ifc_ifcu.ifcu_buf=(void *)ifr;
-
+	ifc.ifc_len = sizeof(ifr);
+	ifc.ifc_ifcu.ifcu_buf = (void *)ifr;
 	ioctl(soc, SIOCGIFCONF, &ifc);
-
-	network_interface_numbers=ifc.ifc_len/sizeof(struct ifreq);
-
-	// printf("ifc.ifc_len:%d\n",ifc.ifc_len);
-	// printf("ifc.ifc_ifcu.ifcu_buf:%d\n",ifc.ifc_ifcu);
-	// printf("nifs=ifc.ifc_len/sizeof(struct ifreq):%d\n",sizeof(struct ifreq));
-
+	network_interface_numbers = ifc.ifc_len/sizeof(struct ifreq);
 	
-	int i;
-	for(i=0;i<network_interface_numbers;i++) {
-		printf("%s\n",ifr[i].ifr_name);
+	for(int i = 0;i<network_interface_numbers;i++) {
+		printf("* %s\n", ifr[i].ifr_name);
 	}
-
-
 	close(soc);
-
 }
