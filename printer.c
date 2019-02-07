@@ -49,7 +49,6 @@
 #include <netinet/ether.h>
 #include <netinet/tcp.h>
 
-
 int print_ARP(struct ether_arp *arp,FILE *fp){
 
     printf("debug in print arp\n");
@@ -142,7 +141,7 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
     };
     printf("hardware_type=%u\n",ntohs(arp->arp_hrd));
     
-    char buff[256];
+    // char buff[256];
     fprintf(fp,"============================ARP info==============================");
 
     fprintf(fp,"hardware_type=%u:",ntohs(arp->arp_hrd));
@@ -160,7 +159,7 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
     fprintf(fp, "arp-protocol-length:%u\n",  arp->arp_pln);
 
     if((ntohs(arp->arp_op)<=20)){
-        fprintf(fp, "arp-operation:%u\n",operation_code[ntohs(arp->arp_op)] );
+        fprintf(fp, "arp-operation:%s\n",operation_code[ntohs(arp->arp_op)] );
     }else{
         fprintf(fp, "undifined\n");
     }
@@ -168,7 +167,7 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
     fprintf(fp,"============================ARP info end==============================");
 
 
-
+	return 0;
 
 
 }
@@ -196,6 +195,7 @@ int print_TCP(struct tcphdr *tcphdr,FILE *fp){
     fprintf(fp, "reserved 2:%u\n",tcphdr->res2);
     fprintf(fp, "============TCP info end=======================\n");
 
+	return 0;
 
 }
 
@@ -242,6 +242,7 @@ int print_IP_header(struct iphdr *iphdr,FILE *fp){
     sleep(5);
     fprintf(fp, "============IP info end=======================\n");
 
+	return 0;
 }
 
 int print_ICMP(struct icmp *icmp,FILE *fp){
@@ -283,6 +284,8 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
     fprintf(fp, "===============ICMP info end=================\n");
     sleep(10);
 
+	return 0;
+
 }
 
 char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){
@@ -320,12 +323,12 @@ int print_EtherHeader(struct ether_header *eh,FILE *fp)
 
 void get_time(FILE *fp){
     char date[1023];
-    time_t t;
-    t=time(NULL);
-    char *now=ctime(&t);
-    fprintf(stderr,now);
+    time_t t = time(NULL);
+	strftime(date, sizeof(date), "%Y/%M/%d %a %H:%M:%S", localtime(&t));
+	printf("%s\n", date);
     return;
 }
+
 void usage(FILE *fp){
 	fprintf(stderr,"                      =========================================================\n");
 	fprintf(stderr,"                    ||                                                         ||\n");

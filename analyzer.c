@@ -30,21 +30,108 @@ int analyze_ICMP(u_char *data,int size){
 	
 	u_char *ptr;
 	int lest;
-
 	struct icmp *icmp;
 
-	if(lest<sizeof(struct icmp)){
-		fprintf(stderr, "lest(%d)<sizeof(struct icmp)\n",lest );
+	ptr = data;
+	lest = size;
 
+	if(lest < sizeof(struct icmp)) {
+		fprintf(stderr, "lest(%d)<sizeof(struct icmp)\n", lest);
 		return (-1);
+	}
+
+	icmp = (struct icmp *)ptr;
+	ptr += sizeof(struct icmp);
+	lest -= sizeof(struct icmp);
+
+	print_ICMP(icmp, stdout);
+
+	return 0;
+}
+
+int analyze_UDP(u_char *data, int size){
+	return 0;
+}
+
+int analyze_TCP(u_char *data,int size){
+
+	u_char *ptr;
+    int lest;
+
+    struct tcphdr *tcphdr;
+
+    ptr=data;
+    lest=size;
+
+    if(lest<sizeof(struct tcphdr)){
+        fprintf(stderr,"lest(%d)<sizeof(struct tcphdr)\n",lest);
+        return (-1);
+    }
+    
+    tcphdr=(struct tcphdr *)ptr;
+    ptr+=sizeof(struct tcphdr);
+    lest-=sizeof(struct tcphdr);
+
+    print_TCP(tcphdr,stdout);
+
+    return 0;
+}
+
+int analyze_IP(u_char *data,int size){
+
+	u_char *ptr;
+	int lest;
+
+	struct iphdr *iphdr;
+
+	int oplen;
+	// int len;
+
+	ptr=data;
+	lest=size;
+
+	if(lest<sizeof(struct iphdr)){
+		fprintf(stderr, "error\n");
+		return (-1);
+	}
+	
+	iphdr=(struct iphdr*)ptr;
+	ptr+=sizeof(struct iphdr);
+	lest-=sizeof(struct iphdr);
+
+	oplen=iphdr->ihl*4-sizeof(struct iphdr);
+
+	if(oplen>0){
+		if(oplen>=1500){
+			fprintf(stderr, "IP oplen:%d\n",oplen);
+			return (-1);
+		}
+
+		// u_char *option;
+		// option=ptr;
+		ptr+=oplen;
+		lest-=oplen;
 
 	}
 
-	icmp=(struct icmp *)ptr;
-	ptr+=sizeof(struct icmp);
-	lest-=sizeof(struct icmp);
+	// if(IP_checksum()){
+	// 	fprintf(stderr, "bad checksum\n");
+	// 	return (-1);
+	// }
 
-	print_ICMP(icmp,stdout);
+	print_IP_header(iphdr,stdout);
+
+	if(iphdr->protocol==IPPROTO_ICMP){
+		// len=ntohs(iphdr->tot_len)-iphdr->ihl*4;
+
+		analyze_ICMP(ptr,lest);
+
+
+	}else if(iphdr->protocol==IPPROTO_TCP){
+		analyze_TCP(ptr,lest);
+	}else if(iphdr->protocol==IPPROTO_UDP){
+		analyze_UDP(ptr, lest);
+	}
 
 	return 0;
 }
@@ -86,20 +173,17 @@ int analyze_Packet(u_char *data,int size){
 	ptr=data;
 	lest=size;
 
-	fprintf(stderr,"lest:%d\n",lest);
-	fprintf(stderr,"sizeof(struct ether_header)%d\n",sizeof(struct ether_header));
+	fprintf(stderr, "lest:%d\n", lest);
+	fprintf(stderr, "sizeof(struct ether_header)%ld\n", sizeof(struct ether_header));
 
-	if(lest<sizeof(struct ether_header)){
-		fprintf(stderr, "lest(%d)<sizeof(struct ether_header)\n",lest );
+	if(lest < sizeof(struct ether_header)) {
+		fprintf(stderr, "lest(%d)<sizeof(struct ether_header)\n", lest);
 		return(-1);
-
 	}
 
 	eh=(struct ether_header *)ptr;
 	ptr+=sizeof(struct ether_header);
 	lest-=sizeof(struct ether_header);
-
-
 
 	if(ntohs(eh->ether_type)==ETHERTYPE_ARP){
 		fprintf(stderr, "packet[%dbytes]\n", size);
@@ -118,111 +202,13 @@ int analyze_Packet(u_char *data,int size){
 	}
 
 	return 0;
-
-
 }
 
-int analyze_TCP(u_char *data,int size){
 
-	u_char *ptr;
-    int lest;
-
-    struct tcphdr *tcphdr;
-
-    ptr=data;
-    lest=size;
-
-    if(lest<sizeof(struct tcphdr)){
-        fprintf(stderr,"lest(%d)<sizeof(struct tcphdr)\n",lest);
-        return (-1);
-    }
-    
-    tcphdr=(struct tcphdr *)ptr;
-    ptr+=sizeof(struct tcphdr);
-    lest-=sizeof(struct tcphdr);
-
-    print_TCP(tcphdr,stdout);
-
-    return 0;
-
-
-}
-
-int analyze_IP(u_char *data,int size){
-
-	u_char *ptr;
-	int lest;
-
-	struct iphdr *iphdr;
-
-	u_char *option;
-	int oplen;
-	int len;
-	unsigned short sum;
-
-	ptr=data;
-	lest=size;
-
-	if(lest<sizeof(struct iphdr)){
-		fprintf(stderr, "error\n");
-		return (-1);
-	}
-	
-	iphdr=(struct iphdr*)ptr;
-	ptr+=sizeof(struct iphdr);
-	lest-=sizeof(struct iphdr);
-
-	oplen=iphdr->ihl*4-sizeof(struct iphdr);
-
-	if(oplen>0){
-		if(oplen>=1500){
-			fprintf(stderr, "IP oplen:%d\n",oplen);
-			return (-1);
-		}
-
-		option=ptr;
-		ptr+=oplen;
-		lest-=oplen;
-
-	}
-
-	// if(IP_checksum()){
-	// 	fprintf(stderr, "bad checksum\n");
-	// 	return (-1);
-	// }
-
-	print_IP_header(iphdr,stdout);
-
-	if(iphdr->protocol==IPPROTO_ICMP){
-		// len=ntohs(iphdr->tot_len)-iphdr->ihl*4;
-
-		analyze_ICMP(ptr,lest);
-
-
-	}else if(iphdr->protocol==IPPROTO_TCP){
-		analyze_TCP(ptr,lest);
-	}else if(iphdr->protocol==IPPROTO_UDP){
-		analyze_UDP(ptr,lest);
-	}
-
-
-
-	return 0;
-		
-}
-analyze_UDP(ptr,lest){
-
-	
-
-}
 
 int analayze_IPv6(u_char *data,int size){
 
-	u_char *ptr;
-	int lest;
-
-	
-
-
+	// u_char *ptr;
+	// int lest;
 	return 0;
 }

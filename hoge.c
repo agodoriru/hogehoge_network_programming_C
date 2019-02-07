@@ -21,16 +21,20 @@
 #include <getopt.h>
 #include <time.h>
 #include <sys/time.h>
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
+#include <netinet/if_ether.h>
+#include <netinet/ip_icmp.h>
 
 //self made
-#include "analyzer.h"
 #include "printer.h"
+#include "analyzer.h"
 #include "interface_checker.h"
 
 int init_descriptor(char *network_interface_name,int promiscuous_flag);
 
 int main(int argc,char *argv[]){
-    int	soc,size;
+    int soc,size;
     u_char buff[8191];
 
     //no command line argument
@@ -56,7 +60,7 @@ int main(int argc,char *argv[]){
 
     printf("initiating descriptor success!\n");
     printf("in while soc:%d\n",soc );
-    printf("size:%d\n",read(soc,buff,sizeof(buff)));
+    printf("size:%ld\n", read(soc,buff,sizeof(buff)));
     sleep(10);
 
 
@@ -88,7 +92,7 @@ int main(int argc,char *argv[]){
                 printf("=====================================================\n");
 
             }else{
-                fprintf(stderr,"read size(%d) < %d\n",size,sizeof(struct ether_header));
+                fprintf(stderr,"read size(%d) < %ld\n", size, sizeof(struct ether_header));
             }
         }
     }
