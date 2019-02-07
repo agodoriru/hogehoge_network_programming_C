@@ -294,30 +294,28 @@ char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){
 	return(buff);
 }
 
-int print_EtherHeader(struct ether_header *eh,FILE *fp)
+int print_EtherHeader(struct ether_header *eh, FILE *fp)
 {
-    char buf[80];
+    char buf[2048];
     fprintf(fp,"ether_header----------------------------\n");
-
-    fprintf(fp,"ether_distination_host=%s\n",MACaddress_int_to_str(eh->ether_dhost,buf,sizeof(buf)));
-    fprintf(fp,"ether_source_host=%s\n",MACaddress_int_to_str(eh->ether_shost,buf,sizeof(buf)));
-
+    fprintf(fp,"ether_distination_host=%s\n", MACaddress_int_to_str(eh->ether_dhost, buf, sizeof(buf)));
+    fprintf(fp,"ether_source_host=%s\n", MACaddress_int_to_str(eh->ether_shost,buf, sizeof(buf)));
     fprintf(fp,"ether_type=%02X",ntohs(eh->ether_type));
+
     switch(ntohs(eh->ether_type)){
         case	ETH_P_IP:
-            fprintf(fp,"(IP)\n");
+            fprintf(fp, "(IP)\n");
             break;
         case	ETH_P_IPV6:
-            fprintf(fp,"(IPv6)\n");
+            fprintf(fp, "(IPv6)\n");
             break;
         case	ETH_P_ARP:
-            fprintf(fp,"(ARP)\n");
+            fprintf(fp, "(ARP)\n");
             break;
         default:
-            fprintf(fp,"(unknown)\n");
+            fprintf(fp, "(unknown)\n");
             break;
     }
-
     return(0);
 }
 
