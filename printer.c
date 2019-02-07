@@ -330,19 +330,18 @@ void get_time(FILE *fp){
 }
 
 void usage(FILE *fp){
-	fprintf(stderr,"                      =========================================================\n");
-	fprintf(stderr,"                    ||                                                         ||\n");
-	fprintf(stderr,"                    ||          hogehoge network capture                       ||\n");
-	fprintf(stderr,"                    ||                                                         ||\n");
-	fprintf(stderr,"                    ||      !!! warning need sudo privileges to use !!!        ||\n");
-	fprintf(stderr,"                    ||                                                         ||\n");
-	fprintf(stderr,"                    ||          $ sudo ./hoge [network interface name]         ||\n");
-	fprintf(stderr,"                    ||          -> show something                              ||\n");
-	fprintf(stderr,"                    ||                                                         ||\n");
-	fprintf(stderr,"                    ||          $ sudo ./a.out                                 ||\n");
-	fprintf(stderr,"                    ||          -> show usage                                  ||\n");
-	fprintf(stderr,"                    ||                                                         ||\n");
-	fprintf(stderr,"                      =========================================================\n");
-	fprintf(stderr,"\n");
+	fprintf(stderr,"  =========================================================\n");
+	fprintf(stderr,"||                                                         ||\n");
+	fprintf(stderr,"||          hogehoge network capture                       ||\n");
+	fprintf(stderr,"||                                                         ||\n");
+	fprintf(stderr,"||      !!! warning need sudo privileges to use !!!        ||\n");
+	fprintf(stderr,"||                                                         ||\n");
+	fprintf(stderr,"||          $ sudo ./main [network interface name]         ||\n");
+	fprintf(stderr,"||          -> show something                              ||\n");
+	fprintf(stderr,"||                                                         ||\n");
+	fprintf(stderr,"||          $ sudo ./main                                  ||\n");
+	fprintf(stderr,"||          -> show usage                                  ||\n");
+	fprintf(stderr,"||                                                         ||\n");
+	fprintf(stderr,"  =========================================================\n");
 
 }
