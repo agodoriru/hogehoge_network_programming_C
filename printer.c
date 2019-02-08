@@ -219,7 +219,7 @@ int print_UDP(struct udphdr *udphdr, FILE *fp){
     return 0;
 }
 
-int print_IP_header(struct iphdr *iphdr,FILE *fp){
+int print_IP_header(struct iphdr *iphdr, u_char *option, int oplen, FILE *fp){
     fprintf(fp, "============IP info=======================\n");
     static char *protocol[]={
         "undifined",
@@ -257,6 +257,18 @@ int print_IP_header(struct iphdr *iphdr,FILE *fp){
     }
     fprintf(fp, "sourse address:%s\n", ip_int_to_str(iphdr->saddr, buff, sizeof(buff)));
     fprintf(fp, "dest address:%s\n", ip_int_to_str(iphdr->daddr, buff, sizeof(buff)));
+    fprintf(fp, "oplen:%d\n", oplen);
+
+    if (oplen > 0) {
+        fprintf(fp, "option:");
+        for(int i = 0; i < oplen ; i++ ) {
+			if (i % 16 == 0) {
+				fprintf(fp, "\n");
+			}
+             fprintf(fp, "%02x ", option[i]);
+        }
+		fprintf(fp, "\n");
+    }
     fprintf(fp, "============IP info end=======================\n");
 
 	return 0;

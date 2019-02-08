@@ -99,40 +99,39 @@ int analyze_UDP(u_char *data, int size) {
 	return 0;
 }
 
-int analyze_IP(u_char *data,int size){
+int analyze_IP(u_char *data, int size){
 
 	u_char *ptr;
 	int lest;
 
 	struct iphdr *iphdr;
 
+	u_char *option;
 	int oplen;
-	// int len;
 
-	ptr=data;
-	lest=size;
+	ptr = data;
+	lest = size;
 
-	if(lest<sizeof(struct iphdr)){
+	if(lest<sizeof(struct iphdr)) {
 		fprintf(stderr, "error\n");
 		return (-1);
 	}
 	
-	iphdr=(struct iphdr*)ptr;
-	ptr+=sizeof(struct iphdr);
-	lest-=sizeof(struct iphdr);
+	iphdr = (struct iphdr*)ptr;
+	ptr += sizeof(struct iphdr);
+	lest -= sizeof(struct iphdr);
 
-	oplen=iphdr->ihl*4-sizeof(struct iphdr);
+	oplen = iphdr->ihl*4-sizeof(struct iphdr);
 
-	if(oplen>0){
-		if(oplen>=1500){
+	if(oplen>0) {
+		if(oplen>=1500) {
 			fprintf(stderr, "IP oplen:%d\n",oplen);
 			return (-1);
 		}
 
-		// u_char *option;
-		// option=ptr;
-		ptr+=oplen;
-		lest-=oplen;
+		option = ptr;
+		ptr += oplen;
+		lest -= oplen;
 
 	}
 
@@ -141,16 +140,12 @@ int analyze_IP(u_char *data,int size){
 	// 	return (-1);
 	// }
 
-	print_IP_header(iphdr,stdout);
+	print_IP_header(iphdr, option, oplen, stdout);
 
 	if(iphdr->protocol==IPPROTO_ICMP){
-		// len=ntohs(iphdr->tot_len)-iphdr->ihl*4;
-
-		analyze_ICMP(ptr,lest);
-
-
+		analyze_ICMP(ptr, lest);
 	}else if(iphdr->protocol==IPPROTO_TCP){
-		analyze_TCP(ptr,lest);
+		analyze_TCP(ptr, lest);
 	}else if(iphdr->protocol==IPPROTO_UDP){
 		analyze_UDP(ptr, lest);
 	}
