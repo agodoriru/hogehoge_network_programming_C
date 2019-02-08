@@ -216,16 +216,19 @@ int print_IP_header(struct iphdr *iphdr,FILE *fp){
         "UDP",
 
     };
+    char buff[256];
 
     fprintf(fp, "version:%u\n", iphdr->version);
     fprintf(fp, "header length:%u\n", iphdr->ihl);
     fprintf(fp, "type of service:%u\n", iphdr->tos);
     fprintf(fp, "packet total size:%u\n", iphdr->tot_len);
-    fprintf(fp, "protocol:%u ", iphdr->protocol);
+    fprintf(fp, "protocol:%u\n", iphdr->protocol);
+    fprintf(fp, "sourse address:%s\n", ip_int_to_str(iphdr->saddr, buff, sizeof(buff)));
+    fprintf(fp, "dest address:%s\n", ip_int_to_str(iphdr->daddr, buff, sizeof(buff)));
 
-    if((iphdr->protocol)<=25){
+    if((iphdr->protocol)<=25) {
         fprintf(fp, "%s\n", protocol[iphdr->protocol]);
-    }else{
+    } else {
         fprintf(fp, "undifined\n");
     }
     fprintf(fp, "============IP info end=======================\n");
