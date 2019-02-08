@@ -155,11 +155,10 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
 
     };
     fprintf(fp, "============================ARP info==============================\n");
-    printf("hardware_type=%u\n", ntohs(arp->arp_hrd));
     
     char buff[256];
 
-    fprintf(fp,"hardware_type=%u:", ntohs(arp->arp_hrd));
+    fprintf(fp,"hardware_type=%u ", ntohs(arp->arp_hrd));
 
     if((ntohs(arp->arp_hrd)) < 25) {
         fprintf(fp, "%s\n", hardware_type[ntohs(arp->arp_hrd)]);
