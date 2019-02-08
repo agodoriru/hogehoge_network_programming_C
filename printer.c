@@ -186,6 +186,12 @@ int print_TCP(struct tcphdr *tcphdr,FILE *fp){
 	return 0;
 }
 
+static char *ip_int_to_str(u_int32_t ip, char *buff, socklen_t size) {
+	struct in_addr *addr;
+	addr = (struct in_addr *)&ip;
+	inet_ntop(AF_INET, addr, buff, size);
+	return(buff);
+}
 
 int print_IP_header(struct iphdr *iphdr,FILE *fp){
     fprintf(fp, "============IP info=======================\n");
@@ -299,7 +305,7 @@ int print_EtherHeader(struct ether_header *eh, FILE *fp)
 }
 
 void get_time(FILE *fp){
-    char date[1023];
+    char date[4096];
     time_t t = time(NULL);
 	strftime(date, sizeof(date), "%Y/%M/%d %a %H:%M:%S", localtime(&t));
 	printf("%s\n", date);
