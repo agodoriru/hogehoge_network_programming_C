@@ -321,7 +321,7 @@ int print_EtherHeader(struct ether_header *eh, FILE *fp)
 void get_time(FILE *fp){
     char date[4096];
     time_t t = time(NULL);
-	strftime(date, sizeof(date), "%Y/%M/%d %a %H:%M:%S", localtime(&t));
+	strftime(date, sizeof(date), "%Y/%m/%d %a %H:%M:%S", localtime(&t));
 	printf("%s\n", date);
     return;
 }
