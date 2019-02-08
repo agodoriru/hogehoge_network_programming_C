@@ -48,6 +48,7 @@
 #include <linux/if_ether.h>
 #include <netinet/ether.h>
 #include <netinet/tcp.h>
+#include <netinet/udp.h>
 
 char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){
 	snprintf(buff,size,"%02x:%02x:%02x:%02x:%02x:%02x",
@@ -208,6 +209,15 @@ int print_TCP(struct tcphdr *tcphdr,FILE *fp){
 	return 0;
 }
 
+int print_UDP(struct udphdr *udphdr, FILE *fp){
+    fprintf(fp, "============UDP info=======================\n");
+    fprintf(fp, "source port:%u\n", ntohs(udphdr->uh_sport));
+    fprintf(fp, "target port:%u\n", ntohs(udphdr->uh_dport));
+    fprintf(fp, "len:%u\n", ntohs(udphdr->uh_ulen));
+    fprintf(fp, "check sum:%u\n", ntohs(udphdr->uh_sum));
+    fprintf(fp, "============UDP info end=======================\n");
+    return 0;
+}
 
 int print_IP_header(struct iphdr *iphdr,FILE *fp){
     fprintf(fp, "============IP info=======================\n");

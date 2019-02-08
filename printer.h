@@ -4,5 +4,6 @@ int print_ARP(struct ether_arp *arp,FILE *fp);
 int print_ICMP(struct icmp *icmp,FILE *fp);
 int print_IP_header(struct iphdr *iphdr,FILE *fp);
 int print_TCP(struct tcphdr *tcphdr,FILE *fp);
+int print_UDP(struct udphdr *udphdr, FILE *fp);
 void get_time(FILE *fp);
 void usage(FILE *fp);

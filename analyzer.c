@@ -21,6 +21,7 @@
 #include <netinet/ip_icmp.h>
 #include <netinet/if_ether.h>
 #include <netinet/tcp.h>
+#include <netinet/udp.h>
 
 
 //self made
@@ -49,10 +50,6 @@ int analyze_ICMP(u_char *data,int size) {
 	return 0;
 }
 
-int analyze_UDP(u_char *data, int size){
-	return 0;
-}
-
 int analyze_TCP(u_char *data,int size){
 
 	u_char *ptr;
@@ -75,6 +72,31 @@ int analyze_TCP(u_char *data,int size){
     print_TCP(tcphdr,stdout);
 
     return 0;
+}
+
+int analyze_UDP(u_char *data, int size) {
+
+	u_char *ptr;
+	int lest;
+
+	struct udphdr *udphdr;
+
+	ptr = data;
+	lest = size;
+
+	if(lest < sizeof(struct udphdr)) {
+		fprintf(stderr, "lest(%d) < sizeof(struct udphdr)\n", lest);
+		return (-1);
+	}
+
+	udphdr = (struct udphdr *)ptr;
+
+	ptr += sizeof(struct udphdr);
+	lest -= sizeof(struct udphdr);
+
+	print_UDP(udphdr, stdout);
+
+	return 0;
 }
 
 int analyze_IP(u_char *data,int size){
