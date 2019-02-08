@@ -49,6 +49,24 @@
 #include <netinet/ether.h>
 #include <netinet/tcp.h>
 
+char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){
+	snprintf(buff,size,"%02x:%02x:%02x:%02x:%02x:%02x",
+		hwaddr[0],hwaddr[1],hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]);
+	return(buff);
+}
+
+static char *ip_int_to_str(u_int32_t ip, char *buff, socklen_t size) {
+	struct in_addr *addr;
+	addr = (struct in_addr *)&ip;
+	inet_ntop(AF_INET, addr, buff, size);
+	return(buff);
+}
+
+static char *arp_ip_int_to_str(u_int8_t *ip, char *buff, socklen_t size) {
+	snprintf(buff, size, "%u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+	return(buff);
+}
+
 int print_ARP(struct ether_arp *arp,FILE *fp){
 
     static char *hardware_type[]={
@@ -105,6 +123,7 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
         //ref-url:https://www.iana.org/assignments/arp-parameters/arp-parameters.xhtml
         //====================================================================================
 
+        "Undefine",
         "REQUEST",
         "REPLY",
         "request Reverse",
@@ -135,10 +154,10 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
 
 
     };
+    fprintf(fp, "============================ARP info==============================\n");
     printf("hardware_type=%u\n", ntohs(arp->arp_hrd));
     
-    // char buff[256];
-    fprintf(fp,"============================ARP info==============================");
+    char buff[256];
 
     fprintf(fp,"hardware_type=%u:", ntohs(arp->arp_hrd));
 
@@ -158,7 +177,11 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
         fprintf(fp, "undifined\n");
     }
 
-    fprintf(fp,"============================ARP info end==============================");
+    fprintf(fp, "source mac address:%s\n", MACaddress_int_to_str(arp->arp_sha, buff, sizeof(buff)));
+    fprintf(fp, "dest mac address:%s\n", MACaddress_int_to_str(arp->arp_tha, buff, sizeof(buff)));
+    fprintf(fp, "sourse address:%s\n", arp_ip_int_to_str(arp->arp_spa, buff, sizeof(buff)));
+    fprintf(fp, "dest address:%s\n", arp_ip_int_to_str(arp->arp_tpa, buff, sizeof(buff)));
+    fprintf(fp, "============================ARP info end==============================\n");
 
 	return 0;
 }
@@ -186,12 +209,6 @@ int print_TCP(struct tcphdr *tcphdr,FILE *fp){
 	return 0;
 }
 
-static char *ip_int_to_str(u_int32_t ip, char *buff, socklen_t size) {
-	struct in_addr *addr;
-	addr = (struct in_addr *)&ip;
-	inet_ntop(AF_INET, addr, buff, size);
-	return(buff);
-}
 
 int print_IP_header(struct iphdr *iphdr,FILE *fp){
     fprintf(fp, "============IP info=======================\n");
@@ -276,11 +293,6 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
 	return 0;
 }
 
-char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){
-	snprintf(buff,size,"%02x:%02x:%02x:%02x:%02x:%02x",
-		hwaddr[0],hwaddr[1],hwaddr[2],hwaddr[3],hwaddr[4],hwaddr[5]);
-	return(buff);
-}
 
 int print_EtherHeader(struct ether_header *eh, FILE *fp)
 {
