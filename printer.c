@@ -51,9 +51,6 @@
 
 int print_ARP(struct ether_arp *arp,FILE *fp){
 
-    printf("debug in print arp\n");
-
-
     static char *hardware_type[]={
 
         //====================================================================================
@@ -100,7 +97,6 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
         "HFI",
         "Unassigned",
 
-
     };
 
     static char *operation_code[]={
@@ -139,71 +135,61 @@ int print_ARP(struct ether_arp *arp,FILE *fp){
 
 
     };
-    printf("hardware_type=%u\n",ntohs(arp->arp_hrd));
+    printf("hardware_type=%u\n", ntohs(arp->arp_hrd));
     
     // char buff[256];
     fprintf(fp,"============================ARP info==============================");
 
-    fprintf(fp,"hardware_type=%u:",ntohs(arp->arp_hrd));
+    fprintf(fp,"hardware_type=%u:", ntohs(arp->arp_hrd));
 
-    if((ntohs(arp->arp_hrd))<25){
-        fprintf(fp,"%s\n",hardware_type[ntohs(arp->arp_hrd)]);
-    }else{
-        fprintf(fp,"undifined\n");
+    if((ntohs(arp->arp_hrd)) < 25) {
+        fprintf(fp, "%s\n", hardware_type[ntohs(arp->arp_hrd)]);
+    } else {
+        fprintf(fp, "undifined\n");
     }
     
+    fprintf(fp, "arp-protocol:%u\n", ntohs(arp->arp_pro) );
+    fprintf(fp, "arp-headware-length:%u\n", arp->arp_hln);
+    fprintf(fp, "arp-protocol-length:%u\n", arp->arp_pln);
 
-    fprintf(fp, "arp-protocol:%u\n",ntohs(arp->arp_pro) );
-
-    fprintf(fp, "arp-headware-length:%u\n",arp->arp_hln);
-    fprintf(fp, "arp-protocol-length:%u\n",  arp->arp_pln);
-
-    if((ntohs(arp->arp_op)<=20)){
-        fprintf(fp, "arp-operation:%s\n",operation_code[ntohs(arp->arp_op)] );
-    }else{
+    if((ntohs(arp->arp_op) <= 20)){
+        fprintf(fp, "arp-operation:%s\n", operation_code[ntohs(arp->arp_op)]);
+    } else {
         fprintf(fp, "undifined\n");
     }
 
     fprintf(fp,"============================ARP info end==============================");
 
-
 	return 0;
-
-
 }
 
 int print_TCP(struct tcphdr *tcphdr,FILE *fp){
     fprintf(fp, "============TCP info=======================\n");
-
-    fprintf(fp, "in print TCP func\n");
-
-    fprintf(fp, "source port:%u\n",ntohs(tcphdr->source));
-    fprintf(fp, "target port:%u\n",ntohs(tcphdr->dest));
-    fprintf(fp, "sequence number:%u\n",ntohl(tcphdr->seq));
-    fprintf(fp, "acknowledgement number:%u\n",ntohl(tcphdr->ack_seq));
-    fprintf(fp, "reserved 1:%u\n",tcphdr->res1);
-    fprintf(fp, "data offset:%u\n",tcphdr->doff);
-    fprintf(fp, "urg bit:%u\n",tcphdr->urg);
-    fprintf(fp, "ack bit:%u\n",tcphdr->ack);
-    fprintf(fp, "psh bit:%u\n",tcphdr->psh);
-    fprintf(fp, "rst bit:%u\n",tcphdr->rst);
-    fprintf(fp, "syn bit:%u\n",tcphdr->syn);
-    fprintf(fp, "fin bit:%u\n",tcphdr->fin);
+    fprintf(fp, "source port:%u\n", ntohs(tcphdr->source));
+    fprintf(fp, "target port:%u\n", ntohs(tcphdr->dest));
+    fprintf(fp, "sequence number:%u\n", ntohl(tcphdr->seq));
+    fprintf(fp, "acknowledgement number:%u\n", ntohl(tcphdr->ack_seq));
+    fprintf(fp, "reserved 1:%u\n", tcphdr->res1);
+    fprintf(fp, "data offset:%u\n", tcphdr->doff);
+    fprintf(fp, "urg bit:%u\n", tcphdr->urg);
+    fprintf(fp, "ack bit:%u\n", tcphdr->ack);
+    fprintf(fp, "psh bit:%u\n", tcphdr->psh);
+    fprintf(fp, "rst bit:%u\n", tcphdr->rst);
+    fprintf(fp, "syn bit:%u\n", tcphdr->syn);
+    fprintf(fp, "fin bit:%u\n", tcphdr->fin);
     fprintf(fp, "window:%u\n", ntohs(tcphdr->window));
-    fprintf(fp, "check sum:%u\n",ntohs(tcphdr->check));
-    fprintf(fp, "urgent pointer:%u\n",ntohs(tcphdr->urg_ptr));
-    fprintf(fp, "reserved 2:%u\n",tcphdr->res2);
+    fprintf(fp, "check sum:%u\n", ntohs(tcphdr->check));
+    fprintf(fp, "urgent pointer:%u\n", ntohs(tcphdr->urg_ptr));
+    fprintf(fp, "reserved 2:%u\n", tcphdr->res2);
     fprintf(fp, "============TCP info end=======================\n");
 
 	return 0;
-
 }
 
 
 int print_IP_header(struct iphdr *iphdr,FILE *fp){
     fprintf(fp, "============IP info=======================\n");
     static char *protocol[]={
-
         "undifined",
         "ICMP",
         "IGMP",
@@ -226,20 +212,16 @@ int print_IP_header(struct iphdr *iphdr,FILE *fp){
     };
 
     fprintf(fp, "version:%u\n", iphdr->version);
-    fprintf(fp, "header length:%u\n",iphdr->ihl);
-    fprintf(fp, "type of service:%u\n",iphdr->tos);
-   
-    fprintf(fp, "packet total size:%u\n",iphdr->tot_len);
-    
-    fprintf(fp, "protocol:%u ",iphdr->protocol);
+    fprintf(fp, "header length:%u\n", iphdr->ihl);
+    fprintf(fp, "type of service:%u\n", iphdr->tos);
+    fprintf(fp, "packet total size:%u\n", iphdr->tot_len);
+    fprintf(fp, "protocol:%u ", iphdr->protocol);
 
     if((iphdr->protocol)<=25){
-        fprintf(fp, "%s\n",protocol[iphdr->protocol]);
+        fprintf(fp, "%s\n", protocol[iphdr->protocol]);
     }else{
         fprintf(fp, "undifined\n");
     }
-
-    sleep(5);
     fprintf(fp, "============IP info end=======================\n");
 
 	return 0;
@@ -267,25 +249,22 @@ int print_ICMP(struct icmp *icmp,FILE *fp){
         "Information Reply",
         "Address Mask Request",
         "Address Mask Reply",
-		
 	};
 
 	fprintf(fp, "===============ICMP info=================\n");
-	fprintf(fp, "icmp type=%u:",icmp -> icmp_type);
+	fprintf(fp, "icmp type=%u:", icmp -> icmp_type);
 
 	if(icmp->icmp_type<=18){
-		fprintf(fp, "%s\n",icmp_type[icmp->icmp_type]);
+		fprintf(fp, "%s\n", icmp_type[icmp->icmp_type]);
 	}else{
 		fprintf(fp, "undifined\n");
 	}
 
-	fprintf(fp, "icmp code=%u\n",icmp->icmp_code);
-	fprintf(fp, "icmp_seq=%u\n",ntohs(icmp->icmp_cksum));
+	fprintf(fp, "icmp code=%u\n", icmp->icmp_code);
+	fprintf(fp, "icmp_seq=%u\n", ntohs(icmp->icmp_cksum));
     fprintf(fp, "===============ICMP info end=================\n");
-    sleep(10);
 
 	return 0;
-
 }
 
 char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){

@@ -26,8 +26,8 @@
 //self made
 #include "printer.h"
 
-int analyze_ICMP(u_char *data,int size){
-	
+int analyze_ICMP(u_char *data,int size) {
+
 	u_char *ptr;
 	int lest;
 	struct icmp *icmp;
@@ -162,9 +162,14 @@ int analyze_ARP(u_char *data,int size){
 
 }
 
+int analayze_IPv6(u_char *data,int size){
+	// u_char *ptr;
+	// int lest;
+	return 0;
+}
 
-int analyze_Packet(u_char *data,int size){
-	
+int analyze_Packet(u_char *data, int size){
+
 	u_char *ptr;
 	int lest;
 
@@ -181,34 +186,20 @@ int analyze_Packet(u_char *data,int size){
 		return(-1);
 	}
 
-	eh=(struct ether_header *)ptr;
-	ptr+=sizeof(struct ether_header);
-	lest-=sizeof(struct ether_header);
+	eh = (struct ether_header *)ptr;
+	ptr += sizeof(struct ether_header);
+	lest -= sizeof(struct ether_header);
 
-	if(ntohs(eh->ether_type)==ETHERTYPE_ARP){
+	if(ntohs(eh->ether_type) == ETHERTYPE_ARP) {
 		fprintf(stderr, "packet[%dbytes]\n", size);
-		print_EtherHeader(eh,stdout);
-		printf("debug\n");
-
-		analyze_ARP(ptr,lest);
-
-		printf("debug pritn arp end\n");
-
+		print_EtherHeader(eh, stdout);
+		analyze_ARP(ptr, lest);
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IP){
-		//analyze IP
-		analyze_IP(ptr,lest);
+		analyze_IP(ptr, lest);
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IPV6){
-		//analayze_IPv6
+		analayze_IPv6(ptr, lest);
 	}
 
 	return 0;
 }
 
-
-
-int analayze_IPv6(u_char *data,int size){
-
-	// u_char *ptr;
-	// int lest;
-	return 0;
-}
