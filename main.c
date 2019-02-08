@@ -56,9 +56,6 @@ int main(int argc,char *argv[]){
         return -1;
     }
 
-    printf("in while soc:%d\n",soc );
-    printf("size:%ld\n", read(soc,buff,sizeof(buff)));
-
     while(1){
 
         if((size = read(soc, buff, sizeof(buff))) <= 0) {
@@ -72,7 +69,6 @@ int main(int argc,char *argv[]){
                 printf("------------------------------------------------\n\n\n");
                 analyze_Packet(buff, size);
                 printf("--------------------------------------------------\n");
-                printf("done analyze\n\n");
                 printf("=====================================================\n");
             } else {
                 fprintf(stderr, "read size(%d) < %ld\n", size, sizeof(struct ether_header));

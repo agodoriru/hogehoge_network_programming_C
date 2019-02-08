@@ -222,15 +222,15 @@ int print_IP_header(struct iphdr *iphdr,FILE *fp){
     fprintf(fp, "header length:%u\n", iphdr->ihl);
     fprintf(fp, "type of service:%u\n", iphdr->tos);
     fprintf(fp, "packet total size:%u\n", iphdr->tot_len);
-    fprintf(fp, "protocol:%u\n", iphdr->protocol);
-    fprintf(fp, "sourse address:%s\n", ip_int_to_str(iphdr->saddr, buff, sizeof(buff)));
-    fprintf(fp, "dest address:%s\n", ip_int_to_str(iphdr->daddr, buff, sizeof(buff)));
+    fprintf(fp, "protocol:%u ", iphdr->protocol);
 
-    if((iphdr->protocol)<=25) {
+    if((iphdr->protocol) <= 25) {
         fprintf(fp, "%s\n", protocol[iphdr->protocol]);
     } else {
         fprintf(fp, "undifined\n");
     }
+    fprintf(fp, "sourse address:%s\n", ip_int_to_str(iphdr->saddr, buff, sizeof(buff)));
+    fprintf(fp, "dest address:%s\n", ip_int_to_str(iphdr->daddr, buff, sizeof(buff)));
     fprintf(fp, "============IP info end=======================\n");
 
 	return 0;

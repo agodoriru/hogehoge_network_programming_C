@@ -178,9 +178,6 @@ int analyze_Packet(u_char *data, int size){
 	ptr=data;
 	lest=size;
 
-	fprintf(stderr, "lest:%d\n", lest);
-	fprintf(stderr, "sizeof(struct ether_header)%ld\n", sizeof(struct ether_header));
-
 	if(lest < sizeof(struct ether_header)) {
 		fprintf(stderr, "lest(%d)<sizeof(struct ether_header)\n", lest);
 		return(-1);
@@ -191,7 +188,7 @@ int analyze_Packet(u_char *data, int size){
 	lest -= sizeof(struct ether_header);
 
 	if(ntohs(eh->ether_type) == ETHERTYPE_ARP) {
-		fprintf(stderr, "packet[%dbytes]\n", size);
+		fprintf(stdout, "packet[%dbytes]\n", size);
 		print_EtherHeader(eh, stdout);
 		analyze_ARP(ptr, lest);
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IP){
