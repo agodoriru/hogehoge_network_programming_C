@@ -22,6 +22,7 @@
 #include <netinet/if_ether.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
+#include <netinet/ip6.h>
 
 
 //self made
@@ -179,9 +180,27 @@ int analyze_ARP(u_char *data,int size){
 
 }
 
-int analayze_IPv6(u_char *data,int size){
-	// u_char *ptr;
-	// int lest;
+int analyze_IPv6(u_char *data,int size) {
+
+	u_char *ptr;
+	int lest;
+
+	struct ip6_hdr *ip6;
+
+	ptr = data;
+	lest = size;
+
+	if (lest < sizeof(struct ip6_hdr)) {
+		fprintf(stderr, "error\n");
+		return -1;
+	}
+
+	ip6 = (struct ip6_hdr *)ptr;
+	ptr += sizeof(struct ip6_hdr);
+	lest -= sizeof(struct ip6_hdr);
+
+	print_IPv6_header(ip6, stdout);
+
 	return 0;
 }
 
@@ -211,7 +230,7 @@ int analyze_Packet(u_char *data, int size){
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IP){
 		analyze_IP(ptr, lest);
 	}else if(ntohs(eh->ether_type)==ETHERTYPE_IPV6){
-		analayze_IPv6(ptr, lest);
+		analyze_IPv6(ptr, lest);
 	}
 
 	return 0;

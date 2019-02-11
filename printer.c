@@ -49,6 +49,7 @@
 #include <netinet/ether.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
+#include <netinet/ip6.h>
 
 char *MACaddress_int_to_str(u_char *hwaddr,char *buff,socklen_t size){
 	snprintf(buff,size,"%02x:%02x:%02x:%02x:%02x:%02x",
@@ -272,6 +273,19 @@ int print_IP_header(struct iphdr *iphdr, u_char *option, int oplen, FILE *fp){
     fprintf(fp, "============IP info end=======================\n");
 
 	return 0;
+}
+
+int print_IPv6_header(struct ip6_hdr *ip6hdr, FILE *fp){
+    char buff[256];
+    fprintf(fp, "===========ipv6 info=======================\n");
+    fprintf(fp, "flow:%x\n", ip6hdr->ip6_flow);
+    fprintf(fp, "payload length:%u\n", ntohs(ip6hdr->ip6_plen));
+    fprintf(fp, "next header:%u\n", ip6hdr->ip6_nxt);
+    fprintf(fp, "hop limit:%u\n", ip6hdr->ip6_hlim);
+    fprintf(fp, "ip6 src:%s\n", inet_ntop(AF_INET6, &ip6hdr->ip6_src, buff, sizeof(buff)));
+    fprintf(fp, "ip6 dest:%s\n", inet_ntop(AF_INET6, &ip6hdr->ip6_dst, buff, sizeof(buff)));
+    fprintf(fp, "============UDP info end=======================\n");
+    return 0;
 }
 
 int print_ICMP(struct icmp *icmp,FILE *fp){
